@@ -1,0 +1,13 @@
+- Iteration 1: 
+  - Focus on the base endpoints of https://api.chucknorris.io/
+  - Validation of the inputs (e.g search limits the query size from 3 to 120 characters)
+  - Swagger Doc
+  - Tests with unittest
+- Iteration 2: 
+  - Integrate another source of joke (e.g https://icanhazdadjoke.com/api) we can use instead of chuck jokes
+  - Add upvote & downvotes
+  - Add random
+- Iteration 3: 
+  - Add `Only include categories` filter in search
+  - Add `Exclude categories` filter in search
+  - Add logging with Sentry or other
