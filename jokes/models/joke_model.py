@@ -9,7 +9,6 @@ class JokeModel(db.Model, Model):
   __tablename__ = 'jokes'
   
   id = Column[int](Integer, primary_key=True, name="joke_id")
-  external_id  = Column[str](VARCHAR(191), nullable=True)
   source  = Column[str](VARCHAR(191), default="local")
   content = Column[str](Text)
   created_at = Column[datetime](DateTime)
@@ -18,7 +17,8 @@ class JokeModel(db.Model, Model):
   
   def __json__(self) -> dict:
     return {
-      "id": self.external_id,
+      "id": self.id,
+      "source": self.source,
       "content": self.content,
       "categories": [],
       "created_at": self.created_at,
