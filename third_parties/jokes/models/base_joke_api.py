@@ -17,7 +17,7 @@ class BaseJokeApi:
     """Get joke from remote source"""
     pass
   
-  def base_request(self, method: str, path:str, params:dict ):
+  def base_request(self, method: str, path:str, params:Optional[dict] = None ):
     url = self.url + path
     print("Requesting: [", method, "] ", url )
     response = requests.request(method, url, params=params)

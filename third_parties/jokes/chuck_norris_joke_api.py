@@ -20,9 +20,10 @@ class ChuckNorrisJokeApi(BaseJokeApi):
     self.url = "https://api.chucknorris.io"
     
   def get(self, id: str) -> Optional[RemoteJoke]:
-      joke: Optional[ChuckNorrisJoke] = self.base_request("get", "/jokes/" + id)
+      joke: Optional[dict] = self.base_request("get", "/jokes/" + id)
       if (joke == None):
         return joke
+      print(joke)
       return self.map_chuck_joke_response(joke)
     
   def search(self, query: str, per_page:int, page:int) -> Optional[RemoteJoke]:
@@ -33,11 +34,6 @@ class ChuckNorrisJokeApi(BaseJokeApi):
       # Simulate pagination as this particular API use any
       start_idx = (page - 1) * per_page
       end_idx = start_idx + per_page
-      
-      print(start_idx)
-      print(end_idx)
-      print("jokes", jokes)
-      print("jokes[\"result\"]", jokes["result"][start_idx:end_idx])
       
       return [self.map_chuck_joke_response(joke) for joke in jokes["result"][start_idx:end_idx]]
       

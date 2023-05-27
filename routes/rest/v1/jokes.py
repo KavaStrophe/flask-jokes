@@ -42,14 +42,16 @@ def list_jokes() -> Response:
 def create_joke() -> Response:
     return make_response(jsonify({"data": {}}), HTTPStatus.OK)
 
-@v1_jokes_bp.route('/<int:joke_id>', methods=["GET"])
-def get_joke(joke_id: int) -> Response:
+@v1_jokes_bp.route('/<string:joke_id>', methods=["GET"])
+def get_joke(joke_id: str) -> Response:
+    chuck_api = ChuckNorrisJokeApi()
+    data = chuck_api.get(joke_id)
+    return make_response(jsonify({"data": data}), HTTPStatus.OK)
+
+@v1_jokes_bp.route('/<string:joke_id>', methods=["PUT"])
+def update_joke(joke_id: str) -> Response:
     return make_response(jsonify({"data": {}}), HTTPStatus.OK)
 
-@v1_jokes_bp.route('/<int:joke_id>', methods=["PUT"])
-def update_joke(joke_id: int) -> Response:
-    return make_response(jsonify({"data": {}}), HTTPStatus.OK)
-
-@v1_jokes_bp.route('/<int:joke_id>', methods=["DELETE"])
-def delete_joke(joke_id: int) -> Response:
+@v1_jokes_bp.route('/<string:joke_id>', methods=["DELETE"])
+def delete_joke(joke_id: str) -> Response:
     return make_response(jsonify({"data": True}), HTTPStatus.OK)
