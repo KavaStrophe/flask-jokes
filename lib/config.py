@@ -12,3 +12,5 @@ class Environment:
         'API_PAGING_DEFAULT_PER_PAGE') != None else 20
     api_paging_default_page: int = int(os.getenv('API_PAGING_DEFAULT_PAGE')) if os.getenv(
         'API_PAGING_DEFAULT_PAGE') != None else 1
+
+print(Environment.db_uri)

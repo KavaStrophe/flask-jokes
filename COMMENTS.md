@@ -2,7 +2,8 @@
   - Focus on the base endpoints of https://api.chucknorris.io/
   - Validation of the inputs (e.g search limits the query size from 3 to 120 characters)
   - Swagger Doc
-  - Tests with unittest
+  - Tests with unittest\
+  - Doc folder structure
 - Iteration 2: 
   - Integrate another source of joke (e.g https://icanhazdadjoke.com/api) we can use instead of chuck jokes
   - Add upvote & downvotes
@@ -11,3 +12,6 @@
   - Add `Only include categories` filter in search
   - Add `Exclude categories` filter in search
   - Add logging with Sentry or other
+
+
+- `routes/rest/v1...` -> Might add other entry points for the app (graphql, etc)

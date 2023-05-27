@@ -1,57 +1,45 @@
 from http import HTTPStatus
 from cerberus import Validator
 from flask import Blueprint, Response, jsonify, make_response, request
+from jokes.services import JokeService
 
-from routes.rest.utils import extract_paging_http_request
-from third_parties.jokes.chuck_norris_joke_api import ChuckNorrisJokeApi
+from routes.rest.v1.schemas import search_joke_schema
 
 v1_jokes_bp = Blueprint('v1_jokes', __name__)
+service = JokeService()
 
-search_schema = {
-    'per_page': {
-        'type': 'integer',
-        'required': False,
-        'min':1,
-        'max':20
-    },
-    'page': {
-        'type': 'integer',
-        'required': False,
-        'min':1
-    },
-    'query': {
-        'type': 'string',
-        'required': True,
-        'minlength':3,
-        'maxlength':120
-    }
-}
 
-@v1_jokes_bp.route('/', methods=["GET"])
+@v1_jokes_bp.route('/search', methods=["GET"])
 def list_jokes() -> Response:
-    v = Validator(search_schema)
+    v = Validator(search_joke_schema)
     if(not v.validate(request.args)):
         return make_response(jsonify({"error": v.errors}), HTTPStatus.BAD_REQUEST)
-    paging = extract_paging_http_request(request)
     query = request.args.get("query", "")
-    chuck_api = ChuckNorrisJokeApi()
-    data = chuck_api.search(query, paging.per_page, paging.page)
-    return make_response(jsonify({"data": data, "paging": {"page": paging.page, "per_page": paging.per_page}}), HTTPStatus.OK)
-
-@v1_jokes_bp.route('/', methods=["POST"])
-def create_joke() -> Response:
-    return make_response(jsonify({"data": {}}), HTTPStatus.OK)
+    data = service.search(query)
+    return make_response(jsonify({"data": data}), HTTPStatus.OK)
 
 @v1_jokes_bp.route('/<string:joke_id>', methods=["GET"])
 def get_joke(joke_id: str) -> Response:
-    chuck_api = ChuckNorrisJokeApi()
-    data = chuck_api.get(joke_id)
+    data = service.get(joke_id)
     return make_response(jsonify({"data": data}), HTTPStatus.OK)
+
+@v1_jokes_bp.route('/', methods=["POST"])
+def create_joke() -> Response:
+    content = request.get_json().get("content")
+    joke = service.create(content=content)
+    return make_response(jsonify({"data": joke}), HTTPStatus.OK)
 
 @v1_jokes_bp.route('/<string:joke_id>', methods=["PUT"])
 def update_joke(joke_id: str) -> Response:
-    return make_response(jsonify({"data": {}}), HTTPStatus.OK)
+    content = request.get_json().get("content")
+    joke = service.update(content=content, id=joke_id)
+    if joke == None:
+        return make_response(jsonify({"error": "Joke " + joke_id + " not found."}), HTTPStatus.NOT_FOUND)
+    return make_response(jsonify({"data": joke}), HTTPStatus.OK)
 
 @v1_jokes_bp.route('/<string:joke_id>', methods=["DELETE"])
 def delete_joke(joke_id: str) -> Response:
+    result = service.delete(id=joke_id)
+    if not result:
+        return make_response(jsonify({"error": "Joke " + joke_id + " not found."}), HTTPStatus.NOT_FOUND)
     return make_response(jsonify({"data": True}), HTTPStatus.OK)

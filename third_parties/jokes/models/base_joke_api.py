@@ -10,7 +10,7 @@ class BaseJokeApi:
   def __init__(self) -> None:
     pass
   
-  def search(self, query:str, page:int, per_page:int) -> List[RemoteJoke]:
+  def search(self, query:str) -> List[RemoteJoke]:
     """List jokes from remote source"""
     pass
   
