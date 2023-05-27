@@ -18,6 +18,7 @@ class ChuckNorrisJoke:
 class ChuckNorrisJokeApi(BaseJokeApi):
   def __init__(self) -> None:
     self.url = "https://api.chucknorris.io"
+    self.source = "chuck_norris_api"
     
   def get(self, id: str) -> Optional[RemoteJoke]:
       joke: Optional[dict] = self.base_request("get", "/jokes/" + id)
@@ -41,6 +42,7 @@ class ChuckNorrisJokeApi(BaseJokeApi):
   def map_chuck_joke_response(self, chuck_joke:dict) -> RemoteJoke:
     return RemoteJoke(
       id = chuck_joke['id'],
+      source=self.source,
       content = chuck_joke['value'],
       categories=chuck_joke['categories'],
       url = chuck_joke['url'],

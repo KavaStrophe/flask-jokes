@@ -5,6 +5,7 @@ import requests
 
 class BaseJokeApi:
   url: str
+  source:str
   
   def __init__(self) -> None:
     pass

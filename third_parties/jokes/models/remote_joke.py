@@ -6,13 +6,15 @@ class RemoteJoke:
   id: str
   content:str
   url: str
+  source: str
   categories: List[str]
   created_at: datetime
   updated_at: datetime
   deleted_at: Optional[datetime]
   
-  def __init__(self, id:str, content:str, url:str, categories: List[str], created_at:datetime, updated_at:datetime, deleted_at: Optional[datetime]):
+  def __init__(self, id:str, source: str, content:str, url:str, categories: List[str], created_at:datetime, updated_at:datetime, deleted_at: Optional[datetime]):
     self.id = id
+    self.source = source,
     self.content = content
     self.url = url
     self.categories = categories
@@ -20,11 +22,12 @@ class RemoteJoke:
     self.updated_at = updated_at
     self.deleted_at = deleted_at
     
-  def __json__(self):
+  def __json__(self) -> dict:
     return {
       "id": self.id,
       "content": self.content,
       "url": self.url,
+      "source": self.source,
       "categories": self.categories,
       "created_at": self.created_at.isoformat(),
       "updated_at": self.updated_at.isoformat(),
