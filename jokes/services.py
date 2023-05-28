@@ -35,15 +35,15 @@ class JokeService:
     # Filters deleted jokes
     return [joke for joke in saved_jokes if joke.deleted_at is None]
   
-  def update(self, id:str, content:str ) -> Optional[JokeModel]:
+  def update(self, id:str, content:Optional[str] ) -> Optional[JokeModel]:
     existing_joke = self.get(id)
     if existing_joke == None:
       return None 
     
     if existing_joke.source != 'local':
-      return self.create(content=existing_joke.content, id=existing_joke.id)
+      return self.create(content=content if content != None else existing_joke.content, id=existing_joke.id)
     
-    existing_joke.content = content
+    existing_joke.content = content if content != None else existing_joke.content
     existing_joke.updated_at = datetime.now()
     db.session.commit()
     db.session.refresh(existing_joke)

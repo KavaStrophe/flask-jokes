@@ -31,7 +31,9 @@ def create_joke() -> Response:
 
 @v1_jokes_bp.route('/<string:joke_id>', methods=["PUT"])
 def update_joke(joke_id: str) -> Response:
-    content = request.get_json().get("content")
+    content = None
+    if request.content_type == "application/json":
+        content = request.get_json().get("content")
     joke = service.update(content=content, id=joke_id)
     if joke == None:
         return make_response(jsonify({"error": "Joke " + joke_id + " not found."}), HTTPStatus.NOT_FOUND)

@@ -20,9 +20,7 @@ class BaseJokeApi:
   
   def base_request(self, method: str, path:str, params:Optional[dict] = None ):
     url = self.url + path
-    print("Requesting: [", method, "] ", url )
     response = requests.request(method, url, params=params)
-    print(response.url)
     if response.status_code // 100 == 2:  # Check if status code is in the 200 family
         return response.json()
     if response.status_code == 404:

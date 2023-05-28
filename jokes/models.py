@@ -16,7 +16,6 @@ class JokeModel(db.Model, Model):
   deleted_at= Column[Optional[datetime]](DateTime, nullable=True, name="deleted_at")
   
   def __json__(self) -> dict:
-    print(self.source)
     return {
       "id": self.id,
       "source": self.source,

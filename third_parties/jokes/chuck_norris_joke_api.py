@@ -14,7 +14,6 @@ class ChuckNorrisJokeApi(BaseJokeApi):
       joke: Optional[dict] = self.base_request("get", "/jokes/" + id)
       if (joke == None):
         return joke
-      print(joke)
       return self.map_chuck_joke_response(joke)
     
   def search(self, query: str) -> Optional[RemoteJoke]:
@@ -26,7 +25,6 @@ class ChuckNorrisJokeApi(BaseJokeApi):
       
       
   def map_chuck_joke_response(self, chuck_joke:dict) -> RemoteJoke:
-    print(self.source)
     return RemoteJoke(
       id = chuck_joke['id'],
       source=self.source,
