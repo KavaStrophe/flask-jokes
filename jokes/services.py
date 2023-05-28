@@ -16,7 +16,6 @@ class JokeService:
   def get(self, id: str) -> Optional[JokeModel]:
     result: Optional[JokeModel] = JokeModel.query.filter_by(id = id).first()
     if result != None:
-      print(result)
       if result.deleted_at != None:
         return None
       return result
@@ -62,9 +61,7 @@ class JokeService:
     db.session.add(joke)
     db.session.commit()
     db.session.refresh(joke)
-    
-    print(joke.id)
-    
+        
     return self.get(joke.id)
       
   def delete(self, id: str) -> bool:
